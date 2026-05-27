@@ -1,0 +1,921 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bose X Franchise Alignment Map</title>
+  <style>
+    :root {
+      --ink: #18212f;
+      --muted: #5f6b7a;
+      --line: #d5dbe3;
+      --panel: #ffffff;
+      --canvas: #f4f6f8;
+      --perceptual: #2f6fbb;
+      --environmental: #2d8a61;
+      --orchestration: #b45f21;
+      --trust: #8a5aa8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--canvas);
+    }
+
+    header {
+      padding: 24px 28px 16px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfd;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 26px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .subhead {
+      max-width: 1050px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(290px, 360px) minmax(520px, 1fr);
+      min-height: calc(100vh - 91px);
+    }
+
+    aside {
+      border-right: 1px solid var(--line);
+      background: var(--panel);
+      padding: 18px;
+      overflow: auto;
+      max-height: calc(100vh - 91px);
+    }
+
+    .stage {
+      padding: 20px;
+      min-width: 0;
+      overflow: auto;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .controls {
+      display: grid;
+      gap: 18px;
+    }
+
+    .control-group h2 {
+      margin: 0 0 10px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #3f4a59;
+    }
+
+    .type-grid,
+    .item-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    label.check {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 8px;
+      align-items: start;
+      font-size: 13px;
+      color: #263241;
+      line-height: 1.3;
+      cursor: pointer;
+    }
+
+    .item-row {
+      display: grid;
+      grid-template-columns: 18px 1fr auto;
+      gap: 8px;
+      align-items: start;
+      font-size: 13px;
+      color: #263241;
+      line-height: 1.3;
+    }
+
+    .item-row label {
+      display: contents;
+      cursor: pointer;
+    }
+
+    .item-link {
+      border: 1px solid #d2dae4;
+      border-radius: 999px;
+      padding: 1px 7px 2px;
+      color: #275f9f;
+      background: #f7fafc;
+      font-size: 11px;
+      line-height: 1.35;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .item-link:hover {
+      background: #edf5ff;
+      border-color: #9bc1e8;
+    }
+
+    input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      accent-color: #1f6feb;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      border: 1px solid #b9c3cf;
+      border-radius: 6px;
+      padding: 6px 9px;
+      background: #f8fafc;
+      color: #1d2837;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #edf2f7;
+    }
+
+    .legend {
+      margin-top: 16px;
+      padding: 14px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .legend h2 {
+      margin: 0 0 8px;
+      color: var(--ink);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .legend-row {
+      display: grid;
+      grid-template-columns: 14px 1fr;
+      gap: 8px;
+      align-items: start;
+      margin: 8px 0;
+    }
+
+    .criteria-block {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid #e2e7ee;
+    }
+
+    .criteria-block h3 {
+      margin: 0 0 8px;
+      color: var(--ink);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    details.criteria {
+      border: 1px solid #e2e7ee;
+      border-radius: 6px;
+      padding: 8px 9px;
+      margin: 8px 0;
+      background: #fbfcfd;
+    }
+
+    details.criteria summary {
+      cursor: pointer;
+      color: #273343;
+      font-weight: 700;
+    }
+
+    details.criteria ul {
+      margin: 7px 0 0 17px;
+      padding: 0;
+    }
+
+    details.criteria li {
+      margin: 4px 0;
+    }
+
+    .swatch {
+      width: 12px;
+      height: 12px;
+      margin-top: 3px;
+      border-radius: 2px;
+    }
+
+    .map-shell {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .viz-card {
+      position: relative;
+      padding: 16px;
+      min-width: 0;
+    }
+
+    .viz-wrap {
+      position: relative;
+      width: min(78vh, 100%);
+      max-width: 880px;
+      min-width: 500px;
+      aspect-ratio: 1 / 1;
+      margin: 0 auto;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, transparent calc(50% - .5px), #aeb8c4 calc(50% - .5px), #aeb8c4 calc(50% + .5px), transparent calc(50% + .5px)),
+        linear-gradient(0deg, transparent calc(50% - .5px), #aeb8c4 calc(50% - .5px), #aeb8c4 calc(50% + .5px), transparent calc(50% + .5px)),
+        #fff;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .quadrant-label {
+      position: absolute;
+      max-width: 42%;
+      padding: 8px 10px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, .88);
+      border: 1px solid rgba(0, 0, 0, .08);
+      font-size: 13px;
+      line-height: 1.2;
+      font-weight: 700;
+      pointer-events: none;
+    }
+
+    .quadrant-label span {
+      display: block;
+      margin-top: 2px;
+      font-weight: 500;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .q-perceptual { top: 12px; left: 12px; color: var(--perceptual); }
+    .q-environmental { top: 12px; right: 12px; color: var(--environmental); text-align: right; }
+    .q-orchestration { left: 12px; bottom: 12px; color: var(--orchestration); }
+    .q-trust { right: 12px; bottom: 12px; color: var(--trust); text-align: right; }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .grid-ring {
+      fill: none;
+      stroke: #dbe1e8;
+      stroke-width: 1;
+    }
+
+    .axis {
+      stroke: #aeb8c4;
+      stroke-width: 1.2;
+    }
+
+    .blob {
+      stroke-width: 2.1;
+      transition: opacity .16s ease, stroke-width .16s ease, filter .16s ease;
+      cursor: pointer;
+    }
+
+    .blob:hover,
+    .blob.active {
+      stroke-width: 3.4;
+      filter: drop-shadow(0 4px 9px rgba(28, 38, 50, .25));
+    }
+
+    .blob-point {
+      pointer-events: none;
+      stroke: #fff;
+      stroke-width: 1.2;
+    }
+
+    .label-line {
+      stroke: rgba(73, 84, 99, .42);
+      stroke-width: 1;
+      stroke-dasharray: 3 4;
+      pointer-events: none;
+    }
+
+    .blob-label {
+      font-size: 14px;
+      font-weight: 750;
+      letter-spacing: 0;
+      fill: var(--label-color, #162233);
+      stroke: #fff;
+      stroke-width: 4px;
+      paint-order: stroke fill;
+      cursor: pointer;
+      dominant-baseline: middle;
+    }
+
+    .blob-label:hover,
+    .blob-label.active {
+      fill: #000;
+      stroke-width: 5px;
+    }
+
+    .detail {
+      padding: 16px;
+      min-height: 420px;
+      position: sticky;
+      top: 20px;
+    }
+
+    .detail h2 {
+      margin: 0 0 4px;
+      font-size: 19px;
+      line-height: 1.2;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      border-radius: 999px;
+      padding: 2px 8px;
+      background: #eef2f6;
+      color: #3d4a59;
+      font-size: 12px;
+      margin-bottom: 14px;
+    }
+
+    .score-table {
+      display: grid;
+      gap: 8px;
+      margin: 14px 0;
+    }
+
+    .score-row {
+      display: grid;
+      grid-template-columns: 116px 1fr 38px;
+      gap: 8px;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .bar {
+      height: 8px;
+      border-radius: 999px;
+      background: #e7ebf0;
+      overflow: hidden;
+    }
+
+    .fill {
+      height: 100%;
+      border-radius: 999px;
+    }
+
+    .detail h3 {
+      margin: 16px 0 6px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #3f4a59;
+    }
+
+    .detail p,
+    .detail li {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.42;
+    }
+
+    .detail ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .source {
+      overflow-wrap: anywhere;
+      font-size: 12px;
+      color: #516070;
+      background: #f5f7fa;
+      border: 1px solid #e1e6ec;
+      border-radius: 6px;
+      padding: 8px;
+    }
+
+    .empty-note {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 1100px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+
+      aside {
+        max-height: none;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .map-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .detail {
+        position: static;
+      }
+    }
+
+    @media (max-width: 640px) {
+      header,
+      .stage,
+      aside {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .viz-wrap {
+        min-width: 0;
+        width: 100%;
+      }
+
+      .quadrant-label {
+        max-width: 46%;
+        font-size: 11px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Bose X Franchise Alignment Map</h1>
+    <p class="subhead">Each item is scored from 0.0 to 1.0 against the four Bose X franchises. Blobs extend from the center toward each franchise quadrant according to score; broader shapes indicate cross-franchise alignment.</p>
+  </header>
+
+  <main>
+    <aside>
+      <section class="controls">
+        <div class="control-group">
+          <h2>Type Filter</h2>
+          <div id="typeFilters" class="type-grid"></div>
+        </div>
+
+        <div class="control-group">
+          <h2>Items</h2>
+          <div class="button-row">
+            <button id="selectAll" type="button">Select all</button>
+            <button id="clearAll" type="button">Clear all</button>
+            <button id="focusCandidates" type="button">Pipe candidates</button>
+          </div>
+          <div id="itemToggles" class="item-list"></div>
+        </div>
+      </section>
+
+      <section class="legend panel">
+        <h2>Legend</h2>
+        <div class="legend-row"><span class="swatch" style="background: var(--perceptual)"></span><div><strong>Top left:</strong> Perceptual Intelligence Systems.</div></div>
+        <div class="legend-row"><span class="swatch" style="background: var(--environmental)"></span><div><strong>Top right:</strong> Environmental Adaptation and Sensing Systems.</div></div>
+        <div class="legend-row"><span class="swatch" style="background: var(--orchestration)"></span><div><strong>Bottom left:</strong> Distributed Edge Orchestration Systems.</div></div>
+        <div class="legend-row"><span class="swatch" style="background: var(--trust)"></span><div><strong>Bottom right:</strong> Trusted and Secure Perceptual Systems.</div></div>
+        <p><strong>Scoring:</strong> 0.0 no meaningful alignment; 0.25 weak/adjacent; 0.5 partial; 0.75 strong; 1.0 central.</p>
+        <div class="criteria-block">
+          <h3>Quadrant Filters</h3>
+          <details class="criteria" open>
+            <summary style="color: var(--perceptual)">Perceptual</summary>
+            <ul>
+              <li><strong>Qualifies:</strong> reusable models of the human listener: attention, salience, preference, fatigue, thresholds, intelligibility, or perceptual evaluation.</li>
+              <li><strong>Disqualifies:</strong> DSP, rendering, acoustics, hardware, or product UX that only makes one product sound better.</li>
+            </ul>
+          </details>
+          <details class="criteria" open>
+            <summary style="color: var(--environmental)">Environmental</summary>
+            <ul>
+              <li><strong>Qualifies:</strong> reusable physical-world representations: rooms, cabins, noise fields, wind, acoustic scenes, topology, sensors, or environment embeddings.</li>
+              <li><strong>Disqualifies:</strong> environment context used only as an input to listener preference, or hardware design without reusable environment inference.</li>
+            </ul>
+          </details>
+          <details class="criteria" open>
+            <summary style="color: var(--orchestration)">Orchestration</summary>
+            <ul>
+              <li><strong>Qualifies:</strong> cross-device handoff, state sharing, compute placement, capability negotiation, latency/power coordination, SDKs, APIs, runtimes, or fabric primitives.</li>
+              <li><strong>Disqualifies:</strong> mode switching or DSP control inside one device; algorithm deployment without reusable cross-target coordination.</li>
+            </ul>
+          </details>
+          <details class="criteria" open>
+            <summary style="color: var(--trust)">Trust</summary>
+            <ul>
+              <li><strong>Qualifies:</strong> privacy-preserving personalization, secure inference, model protection, identity/access, consent, auditability, compliance, or regulated deployment.</li>
+              <li><strong>Disqualifies:</strong> general user confidence, comfort, safety, cybersecurity, encryption, privacy UI, or internal data governance without perceptual trust architecture.</li>
+            </ul>
+          </details>
+        </div>
+      </section>
+    </aside>
+
+    <section class="stage">
+      <div class="map-shell">
+        <section class="viz-card panel">
+          <div class="viz-wrap" id="vizWrap">
+            <div class="quadrant-label q-perceptual">Perceptual<span>attention, salience, hearing models</span></div>
+            <div class="quadrant-label q-environmental">Environmental<span>sensing, scene adaptation</span></div>
+            <div class="quadrant-label q-orchestration">Orchestration<span>edge fabric, device coordination</span></div>
+            <div class="quadrant-label q-trust">Trust<span>privacy, identity, secure inference</span></div>
+            <svg id="viz" viewBox="0 0 1000 1000" role="img" aria-label="Quadrant map of Bose X project alignment"></svg>
+          </div>
+        </section>
+
+        <section class="detail panel" id="detail">
+          <h2>Hover a blob</h2>
+          <p class="empty-note">Use the filters to compare initiatives, projects, and prior framings. Hover or click a shape to inspect its scores, rationales, and source trace.</p>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const DATA = {
+      franchises: [
+        { key: "perceptual", name: "Perceptual Intelligence Systems", color: "#2f6fbb", vector: [-1, -1] },
+        { key: "environmental", name: "Environmental Adaptation and Sensing Systems", color: "#2d8a61", vector: [1, -1] },
+        { key: "orchestration", name: "Distributed Edge Orchestration Systems", color: "#b45f21", vector: [-1, 1] },
+        { key: "trust", name: "Trusted and Secure Perceptual Systems", color: "#8a5aa8", vector: [1, 1] }
+      ],
+      items: []
+    };
+
+    async function loadItems() {
+      const embedded = [{"name":"Perceptual Intelligence Systems","type":"franchise","source":"20_CAPABILITY_FRANCHISES/Bose-X Franchise Wiki - Working Draft.md","source_detail":"Franchise 1 section defines auditory attention, salience, perceptual thresholds, personalization, and evaluation as scope.","scores":{"perceptual":1.0,"environmental":0.25,"orchestration":0.25,"trust":0.25},"rationale":{"perceptual":"Qualifies centrally: it defines the reusable computational model of hearing, attention, salience, thresholds, preference, and evaluation.","environmental":"Adjacent only: environmental signals can feed perceptual models, but physical-world representation is not the franchise output.","orchestration":"Adjacent only: APIs can expose perceptual models, but cross-device coordination is not the core capability.","trust":"Adjacent only: personalization creates privacy implications, but trust architecture is not the franchise definition."}},{"name":"Environmental Adaptation and Sensing Systems","type":"franchise","source":"20_CAPABILITY_FRANCHISES/Bose-X Franchise Wiki - Working Draft.md","source_detail":"Franchise 2 section defines acoustic/contextual environment inference, sensor fusion, environment embeddings, and retuning reduction.","scores":{"perceptual":0.25,"environmental":1.0,"orchestration":0.25,"trust":0.25},"rationale":{"perceptual":"Adjacent only: environment adaptation improves perceived outcomes, but does not itself model the human listener.","environmental":"Qualifies centrally: it creates reusable physical-world inference, sensor fusion, environment embeddings, and retuning-reduction infrastructure.","orchestration":"Adjacent only: portability matters, but cross-device coordination is not the central output.","trust":"Adjacent only: environment maps can be sensitive, but privacy/security architecture is not the main work."}},{"name":"Distributed Edge Orchestration Systems","type":"franchise","source":"20_CAPABILITY_FRANCHISES/Bose-X Franchise Wiki - Working Draft.md","source_detail":"Franchise 3 section defines cross-device experience coherence, compute placement, handoff, and orchestration SDK primitives.","scores":{"perceptual":0.25,"environmental":0.25,"orchestration":1.0,"trust":0.5},"rationale":{"perceptual":"Adjacent only: it coordinates perceptual experiences but does not define the human-hearing model.","environmental":"Adjacent only: environment signals may inform orchestration, but physical-world modeling is an input.","orchestration":"Qualifies centrally: it owns handoff, state sharing, compute placement, capability negotiation, SDKs, and edge coordination.","trust":"Partial: device identity and access control are required for cross-device orchestration, but are enabling rather than primary."}},{"name":"Trusted and Secure Perceptual Systems","type":"franchise","source":"20_CAPABILITY_FRANCHISES/Bose-X Franchise Wiki - Working Draft.md","source_detail":"Franchise 4 section defines privacy-preserving personalization, secure inference, compliance, identity, and trust infrastructure.","scores":{"perceptual":0.25,"environmental":0.25,"orchestration":0.25,"trust":1.0},"rationale":{"perceptual":"Adjacent only: it protects perceptual inference and personalization but does not define the perception model.","environmental":"Adjacent only: environment data may be governed by trust rules but is not the core representation.","orchestration":"Adjacent only: identity/access can support multi-device systems, but coordination is not the franchise output.","trust":"Qualifies centrally: it defines privacy-preserving personalization, secure inference, compliance, identity, access control, and deployable trust architecture."}},{"name":"Quiet Spaces","type":"prior Catalyst framing","source":"80_SOURCE_MIRRORS/confluence/space_export/CAT/Catalyst Innovation Funnel__155845195/Quiet Spaces__604504423/Quiet Spaces.md","source_detail":"Vision covers noise control across wearables, hearing aids, appliances, automotive cabins, masking content, ingredient branding, and education.","scores":{"perceptual":0.5,"environmental":0.75,"orchestration":0.0,"trust":0.25},"rationale":{"perceptual":"Partial: the value is reduced distraction, fatigue, stress, and hearing risk, but the source does not define a reusable human-hearing model.","environmental":"Strong: the work profiles and reduces unwanted noise across wearables, appliances, automotive cabins, and spaces.","orchestration":"Disqualified: the source does not define cross-device handoff, compute placement, or orchestration primitives.","trust":"Weak: ingredient branding and well-being claims create trust expectations, but not privacy/security architecture."}},{"name":"Beyond Immersive","type":"prior Catalyst framing","source":"80_SOURCE_MIRRORS/confluence/space_export/CAT/Catalyst Innovation Funnel__155845195/Beyond ImmersiveRendering Sensing Tuning__300122470/Beyond ImmersiveRendering Sensing Tuning.md","source_detail":"Proposal frames immersive rendering, adaptive tuning, spatial remapping, measurement, orchestration, environment-aware optimization, and distributed compute.","scores":{"perceptual":0.75,"environmental":0.75,"orchestration":0.75,"trust":0.0},"rationale":{"perceptual":"Strong: the source centers perceptual coherence, realism, intelligibility, sound objectives, and perceptual modeling.","environmental":"Strong: environment-aware room, cabin, and on-head optimization are core to the proposal.","orchestration":"Strong: cross-device coherence, distributed compute, ecosystem orchestration, and protocol semantics are explicit scope.","trust":"Disqualified: trust is not framed as privacy, identity, compliance, secure inference, or regulated deployment architecture."}},{"name":"All Day Wearables","type":"prior Catalyst framing","source":"80_SOURCE_MIRRORS/confluence/space_export/CAT/Catalyst Innovation Funnel__155845195/All Day Wearables__604635367/All Day Wearables.md","source_detail":"The prior Catalyst page is empty; scoring uses the lightweight proposal mention and the newer RGI page as contextual evidence.","scores":{"perceptual":0.25,"environmental":0.25,"orchestration":0.0,"trust":0.25},"rationale":{"perceptual":"Weak: the historical page is empty; wearable hearing and spatial listening are inferred from adjacent context, not defined as a reusable perceptual model.","environmental":"Weak: all-day use implies context adaptation, but the source page has no environment representation detail.","orchestration":"Disqualified: no evidence of cross-device coordination or compute-placement primitives.","trust":"Weak: intimate all-day wear implies privacy and adoption concerns, but no trust architecture is specified."}},{"name":"Open Ear ANR Limits","type":"project","source":"80_SOURCE_MIRRORS/confluence/space_export/CAT/Catalyst Innovation Funnel__155845195/Bose X Leadership Team Only__1073545330/Meeting Notes__1422950607/2026-05-18 Bose X Operating Model Working Draft__1444937915/2026-05-18 Bose X Operating Model Working Draft.md","source_detail":"Listed as an example project under the Quiet Spaces initiative; no deeper local project page found.","scores":{"perceptual":0.25,"environmental":0.5,"orchestration":0.0,"trust":0.0},"rationale":{"perceptual":"Weak: open-ear limits may involve comfort and transparency, but the available source is only a project name.","environmental":"Partial: likely tests noise-reduction limits against real acoustic conditions under Quiet Spaces.","orchestration":"Disqualified: no evidence of cross-device or edge coordination.","trust":"Disqualified: no evidence of privacy, identity, compliance, or secure perceptual deployment."}},{"name":"Quiet Chair","type":"project","source":"80_SOURCE_MIRRORS/confluence/space_export/CAT/Catalyst Innovation Funnel__155845195/Bose X Leadership Team Only__1073545330/Meeting Notes__1422950607/2026-05-18 Bose X Operating Model Working Draft__1444937915/2026-05-18 Bose X Operating Model Working Draft.md","source_detail":"Listed as an example project under the Quiet Spaces initiative; no deeper local project page found.","scores":{"perceptual":0.25,"environmental":0.75,"orchestration":0.0,"trust":0.0},"rationale":{"perceptual":"Weak: focused quiet is a user benefit, but no reusable listener model is available locally.","environmental":"Strong: a chair-based quiet zone is spatial acoustic environment control around a fixed user location.","orchestration":"Disqualified: local component control does not meet the cross-device orchestration bar.","trust":"Disqualified: no privacy/security or regulated-deployment architecture is present."}},{"name":"Meta Materials","type":"project","source":"80_SOURCE_MIRRORS/confluence/space_export/CAT/Catalyst Innovation Funnel__155845195/Bose X Leadership Team Only__1073545330/Meeting Notes__1422950607/2026-05-18 Bose X Operating Model Working Draft__1444937915/2026-05-18 Bose X Operating Model Working Draft.md","source_detail":"Listed as an example Quiet Spaces project; Consumer-Meaningful ASM also mentions a metamaterial investigation as related prior work.","scores":{"perceptual":0.25,"environmental":0.75,"orchestration":0.0,"trust":0.0},"rationale":{"perceptual":"Weak: material changes may improve perceived quiet, but the evidence is physical/acoustic rather than perceptual-model driven.","environmental":"Strong: acoustic materials fit environmental control and noise-shaping infrastructure.","orchestration":"Disqualified: no reusable cross-device/runtime coordination.","trust":"Disqualified: no privacy, identity, compliance, or secure inference signal."}},{"name":"Automated Listening and Tuning","type":"Research Growth Initiative","source":"80_SOURCE_MIRRORS/confluence/space_export/CAT/Catalyst Innovation Funnel__155845195/Research Growth Initiatives__1335525606/Automated Listening and Tuning__1335525621/Automated Listening and Tuning.md","source_detail":"Initiative aims to automate OLA tuning using perceptual targets, objective sound frameworks, WaveForm execution, and scalable partner-facing tuning.","scores":{"perceptual":0.75,"environmental":0.25,"orchestration":0.25,"trust":0.0},"rationale":{"perceptual":"Strong: the initiative automates tuning using perceptual targets and objective sound frameworks.","environmental":"Weak: room/device conditions matter, but the source is about tuning workflow more than reusable environment representation.","orchestration":"Weak: WaveForm and partner workflow scale deployment, but not cross-device experience coordination.","trust":"Disqualified: no privacy/security architecture or regulated deployment frame."}},{"name":"Automatic Selective ANC","type":"Research Growth Initiative","source":"80_SOURCE_MIRRORS/confluence/space_export/CAT/Catalyst Innovation Funnel__155845195/Research Growth Initiatives__1335525606/Automatic Selective ANC__1335034168/Automatic Selective ANC.md","source_detail":"Initiative targets ANC that suppresses unwanted sounds while passing important environmental sounds naturally and confidently.","scores":{"perceptual":1.0,"environmental":0.5,"orchestration":0.25,"trust":0.25},"rationale":{"perceptual":"Central: deciding what the listener wants to hear or suppress is the Perceptual vs Environmental litmus test example.","environmental":"Partial: it needs sound-scene and environmental sound-class recognition as inputs.","orchestration":"Weak: decision engines may coordinate feature behavior, but the source is not cross-device orchestration.","trust":"Weak: safety/experience reliability matters, but privacy/security architecture is not primary."}},{"name":"Consumer-Meaningful ASM","type":"Research Growth Initiative","source":"80_SOURCE_MIRRORS/confluence/space_export/CAT/Catalyst Innovation Funnel__155845195/Research Growth Initiatives__1335525606/Consumer-Meaningful ASM__1337557031/Consumer-Meaningful ASM.md","source_detail":"Initiative extends active noise management in cars for road, wind, engine, and vehicle noise with head/ear tracking and added sensing.","scores":{"perceptual":0.25,"environmental":1.0,"orchestration":0.0,"trust":0.25},"rationale":{"perceptual":"Weak: consumer audibility and fatigue are validation outcomes, not the reusable model being built.","environmental":"Central: this is acoustic scene/noise-field modeling and active adaptation in vehicle cabins.","orchestration":"Disqualified: added sensors and tracking do not create cross-device orchestration primitives.","trust":"Weak: automotive safety and hearing-health context may raise trust needs, but no trust architecture is defined."}},{"name":"Fixed Zone Noise Cancelation","type":"Research Growth Initiative","source":"80_SOURCE_MIRRORS/confluence/space_export/CAT/Catalyst Innovation Funnel__155845195/Research Growth Initiatives__1335525606/Fixed Zone Noise Cancelation__1337557046/Fixed Zone Noise Cancelation.md","source_detail":"Phase 0 explores free-space noise cancellation limits for users in fixed positions without wearables, using mic arrays, modeled/recorded fields, and subjective evaluation.","scores":{"perceptual":0.25,"environmental":1.0,"orchestration":0.0,"trust":0.25},"rationale":{"perceptual":"Weak: subjective evaluation matters, but the research question is the noise field and ear-pressure estimate.","environmental":"Central: it explores free-space noise-field sensing, remote ear-pressure estimation, and physical cancellation limits.","orchestration":"Disqualified: a local mic/speaker apparatus is not distributed edge orchestration.","trust":"Weak: possible hospital/aviation applications may require confidence, but privacy/security architecture is absent."}},{"name":"All Day Wearable Mixed Reality Audio Platform","type":"Research Growth Initiative","source":"80_SOURCE_MIRRORS/confluence/space_export/CAT/Catalyst Innovation Funnel__155845195/Research Growth Initiatives__1335525606/All Day Wearable Mixed Reality Audio Platform__1338769455/All Day Wearable Mixed Reality Audio Platform.md","source_detail":"Initiative targets an all-day wearable acoustic platform spanning silence, natural transparency, mixed digital/physical sound, spatial rendering, comfort, and deployability.","scores":{"perceptual":0.75,"environmental":0.5,"orchestration":0.25,"trust":0.25},"rationale":{"perceptual":"Strong: natural transparency, cognitive fatigue reduction, and spatial rendering are strongly listener-model dependent.","environmental":"Partial: blending digital and physical sound needs environmental inference.","orchestration":"Weak: deployability across device categories is platform leverage, but cross-device coordination is not the core claim.","trust":"Weak: all-day intimate wear creates adoption and privacy expectations, but the page does not define trust architecture."}},{"name":"Superhuman Speech Interfaces","type":"Research Growth Initiative","source":"80_SOURCE_MIRRORS/confluence/space_export/CAT/Catalyst Innovation Funnel__155845195/Research Growth Initiatives__1335525606/Superhuman Speech Interfaces__1338507283/Superhuman Speech Interfaces.md","source_detail":"Initiative targets seamless/private speech with AI agents and humans at any speech level and in any environment, including silent speech and high-noise communication.","scores":{"perceptual":0.75,"environmental":0.25,"orchestration":0.25,"trust":0.75},"rationale":{"perceptual":"Strong: speech intelligibility, silent speech, and ASR boosting are perceptual prioritization problems.","environmental":"Weak: high-noise robustness uses environment context, but physical-world representation is not the main output.","orchestration":"Weak: cross-form-factor leverage is noted, but not reusable edge orchestration.","trust":"Strong: private speech in public and silent interfaces directly create privacy-sensitive perceptual computing needs."}},{"name":"Redefining Out Loud Audio Tech","type":"Research Growth Initiative","source":"80_SOURCE_MIRRORS/confluence/space_export/CAT/Catalyst Innovation Funnel__155845195/Research Growth Initiatives__1335525606/Redefining Out Loud Audio Tech__1337786416/Redefining Out Loud Audio Tech.md","source_detail":"Initiative explores adaptive spatial rendering, room-specific directivity, perceptual solvers, user tracking, Sauron, Holigram, and OLA realism.","scores":{"perceptual":0.5,"environmental":0.75,"orchestration":0.25,"trust":0.0},"rationale":{"perceptual":"Partial: immersion, clarity, realism, and perceptual solvers matter, but the initiative is not only a human-hearing model.","environmental":"Strong: room-specific directivity and adaptation to environment/user location are core.","orchestration":"Weak: modular systems and tracking imply coordination, but not cross-device edge middleware.","trust":"Disqualified: no privacy/security or regulated deployment architecture."}},{"name":"Contextual Audio Intelligence Fabric","type":"Research Growth Initiative","source":"80_SOURCE_MIRRORS/confluence/space_export/CAT/Catalyst Innovation Funnel__155845195/Research Growth Initiatives__1335525606/Contextual Audio Intelligence Fabric - Investment Brief__1398407295/Contextual Audio Intelligence Fabric - Investment Brief.md","source_detail":"Investment brief defines shared context, proximity fabric, experience orchestration, policy, privacy/security guardrails, and cross-device prototypes.","scores":{"perceptual":0.75,"environmental":0.75,"orchestration":1.0,"trust":1.0},"rationale":{"perceptual":"Strong: listener state, intent, interruptibility, audibility, and pass/suppress decisions are explicit context assertions.","environmental":"Strong: environmental state and home/car acoustic/topology context are explicit inputs and demo paths.","orchestration":"Central: assertions, fabric leases, resource brokering, policies, and bounded commands are exactly the orchestration bar.","trust":"Central: privacy classes, consent, identity, raw-data minimization, auditability, and security guardrails are explicit scope."}},{"name":"Proprietary DSP Core Exploration","type":"Research Growth Initiative","source":"80_SOURCE_MIRRORS/confluence/space_export/CAT/Catalyst Innovation Funnel__155845195/Research Growth Initiatives__1335525606/Proprietary DSP Core Exploration__1460174860/Proprietary DSP Core Exploration.md","source_detail":"Phase 0 asks whether Bose should define an audio/AI hardware core or architecture for future partner SoCs, including low-power neural audio, sensor integration, and trusted execution.","scores":{"perceptual":0.25,"environmental":0.25,"orchestration":0.75,"trust":0.75},"rationale":{"perceptual":"Weak: it enables perceptual workloads but does not define the perceptual model.","environmental":"Weak: contextual sensing workloads are included, but environment representation is not the main output.","orchestration":"Strong: a hardware-software contract across partner SoCs is runtime/compute-placement infrastructure.","trust":"Strong: trusted execution, IP protection, secure model execution, and private always-on operation are explicit."}},{"name":"Haywire","type":"Research 1 Pager","source":"80_SOURCE_MIRRORS/confluence/space_export/CAT/Catalyst Innovation Funnel__155845195/Research 1 Pagers__1249739758/Haywire real-time stem separation for selective sound pass-through__1436549141/Haywire real-time stem separation for selective sound pass-through.md","source_detail":"One-pager defines real-time text-query-directed stem separation on the aware path for selective sound pass-through and Bose AI ANC framing.","scores":{"perceptual":1.0,"environmental":0.5,"orchestration":0.25,"trust":0.25},"rationale":{"perceptual":"Central: text-guided selective pass-through models what sounds are salient or desired by the listener.","environmental":"Partial: it detects environmental sound classes such as sirens, knocks, alarms, and babies.","orchestration":"Weak: a controller could sit above it, but the separator itself is not cross-device orchestration.","trust":"Weak: safety reliability matters, but formal privacy/security architecture is not present."}},{"name":"Camilo","type":"Research 1 Pager","source":"80_SOURCE_MIRRORS/confluence/space_export/CAT/Catalyst Innovation Funnel__155845195/Research 1 Pagers__1249739758/Camilo__1265598467/Camilo.md","source_detail":"One-pager defines real-time ML audio/content classification driving adaptive DSP, automatic mode switching, smoothing, hysteresis, and product deployment.","scores":{"perceptual":0.25,"environmental":0.75,"orchestration":0.25,"trust":0.0},"rationale":{"perceptual":"Weak: DSP changes improve perceived clarity/comfort, but the core output is content classification.","environmental":"Strong: real-time audio/content scene classification is reusable context sensing.","orchestration":"Weak: confidence-based mode switching inside a product does not meet the distributed edge bar.","trust":"Disqualified: predictable behavior matters, but no privacy/security architecture is present."}},{"name":"Semantic ANC and Acoustic Object Control","type":"Chris core research program","source":"10_RESEARCH_OPERATING_MODEL/2026-05-29 Bose X Leadership Meeting Agenda.md","source_detail":"Agenda lists Chris's Semantic Hearing program; source context also came from user-provided slide/image content naming this program.","scores":{"perceptual":1.0,"environmental":0.5,"orchestration":0.25,"trust":0.25},"rationale":{"perceptual":"Central: object-level suppress/pass control is a listener attention and salience decision.","environmental":"Partial: acoustic objects must be detected in the surrounding sound scene.","orchestration":"Weak: object control could feed orchestration, but the available source does not define cross-device primitives.","trust":"Weak: reliability around safety/social awareness matters, but privacy/security architecture is not defined."}},{"name":"Target Speaker and Target Sound Hearing","type":"Chris core research program","source":"10_RESEARCH_OPERATING_MODEL/2026-05-29 Bose X Leadership Meeting Agenda.md","source_detail":"Agenda lists Chris's Semantic Hearing program; source context also came from user-provided slide/image content naming this program.","scores":{"perceptual":1.0,"environmental":0.5,"orchestration":0.25,"trust":0.25},"rationale":{"perceptual":"Central: selecting and enhancing a target speaker or sound is an auditory attention problem.","environmental":"Partial: the system must separate and localize sources in a real scene.","orchestration":"Weak: it may consume external cues, but cross-device coordination is not the program definition.","trust":"Weak: voice identity and selective amplification can become sensitive, but trust architecture is not explicit."}},{"name":"Real-Time Conversational Audio Loop","type":"Chris core research program","source":"10_RESEARCH_OPERATING_MODEL/2026-05-29 Bose X Leadership Meeting Agenda.md","source_detail":"Agenda lists Chris's Semantic Hearing program; source context also came from user-provided slide/image content naming this program.","scores":{"perceptual":0.75,"environmental":0.25,"orchestration":0.25,"trust":0.5},"rationale":{"perceptual":"Strong: turn-taking, intelligibility, latency, and naturalness are perceptual conversation requirements.","environmental":"Weak: noise and reverb affect performance, but physical environment modeling is not the primary output.","orchestration":"Weak: the loop coordinates processing, but not necessarily across heterogeneous edge devices.","trust":"Partial: conversational audio is intimate and privacy-sensitive, though the program detail is sparse."}},{"name":"Perception-per-Watt Runtime Partnership","type":"Chris core research program","source":"10_RESEARCH_OPERATING_MODEL/2026-05-29 Bose X Leadership Meeting Agenda.md","source_detail":"Agenda lists Chris's Semantic Hearing program; source context also came from user-provided slide/image content naming this program.","scores":{"perceptual":0.25,"environmental":0.0,"orchestration":0.75,"trust":0.25},"rationale":{"perceptual":"Weak: it optimizes perceptual value, but the main work is runtime execution under power constraints.","environmental":"Disqualified: no physical environment representation is evident in the available source.","orchestration":"Strong: model scheduling, compute placement, and power-aware runtime are orchestration infrastructure.","trust":"Weak: on-device runtime can reduce exposure, but trust architecture is not the main program."}}];
+      DATA.items = embedded;
+    }
+
+    const state = {
+      enabledTypes: new Set(),
+      enabledItems: new Set(),
+      activeName: null
+    };
+
+    const svg = document.getElementById("viz");
+    const detail = document.getElementById("detail");
+    const typeFilters = document.getElementById("typeFilters");
+    const itemToggles = document.getElementById("itemToggles");
+
+    function scoreColor(item) {
+      const maxKey = DATA.franchises
+        .map(f => [f.key, item.scores[f.key]])
+        .sort((a, b) => b[1] - a[1])[0][0];
+      return DATA.franchises.find(f => f.key === maxKey).color;
+    }
+
+    function drawingFranchises() {
+      const byKey = Object.fromEntries(DATA.franchises.map(f => [f.key, f]));
+      return ["perceptual", "environmental", "trust", "orchestration"].map(key => byKey[key]);
+    }
+
+    function jitter(index, radius) {
+      const angle = index * 2.399963229728653;
+      return [Math.cos(angle) * radius, Math.sin(angle) * radius];
+    }
+
+    function polygonPoints(item, index) {
+      const center = [500, 500];
+      const maxRadius = 415;
+      const offset = jitter(index, 5 + (index % 5) * 1.5);
+      return drawingFranchises().map(f => {
+        const score = item.scores[f.key] || 0;
+        const unit = f.vector;
+        const length = score * maxRadius;
+        return [
+          center[0] + offset[0] + unit[0] * length,
+          center[1] + offset[1] + unit[1] * length
+        ];
+      });
+    }
+
+    function labelPosition(item, index, points) {
+      const scores = DATA.franchises.map(f => item.scores[f.key] || 0);
+      const total = scores.reduce((sum, score) => sum + score, 0) || 1;
+      const direction = DATA.franchises.reduce((acc, f, i) => {
+        acc[0] += f.vector[0] * scores[i];
+        acc[1] += f.vector[1] * scores[i];
+        return acc;
+      }, [0, 0]);
+      let length = Math.hypot(direction[0], direction[1]);
+      if (length < 0.18) {
+        const fallback = DATA.franchises[index % DATA.franchises.length].vector;
+        direction[0] = fallback[0];
+        direction[1] = fallback[1];
+        length = Math.SQRT2;
+      }
+      const unit = [direction[0] / length, direction[1] / length];
+      const maxScore = Math.max(...scores);
+      const ring = 120 + maxScore * 165;
+      const spread = jitter(index, 18 + (index % 7) * 4);
+      const x = clamp(500 + unit[0] * ring + spread[0], 92, 908);
+      const y = clamp(500 + unit[1] * ring + spread[1], 80, 920);
+      const centroid = points.reduce((acc, p) => [acc[0] + p[0], acc[1] + p[1]], [0, 0]).map(v => v / points.length);
+      return { x, y, anchor: x < 485 ? "end" : "start", centroid };
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function shortLabel(name) {
+      const aliases = {
+        "Perceptual Intelligence Systems": "Perceptual Intelligence",
+        "Environmental Adaptation and Sensing Systems": "Environmental Adaptation",
+        "Distributed Edge Orchestration Systems": "Edge Orchestration",
+        "Trusted and Secure Perceptual Systems": "Trust & Security",
+        "All Day Wearable Mixed Reality Audio Platform": "All Day MR Wearable",
+        "Contextual Audio Intelligence Fabric": "Contextual Fabric",
+        "Proprietary DSP Core Exploration": "Proprietary Core",
+        "Semantic ANC and Acoustic Object Control": "Semantic ANC",
+        "Target Speaker and Target Sound Hearing": "Target Hearing",
+        "Real-Time Conversational Audio Loop": "Conversational Loop",
+        "Perception-per-Watt Runtime Partnership": "Perception/Watt Runtime"
+      };
+      const label = aliases[name] || name;
+      return label.length > 29 ? label.slice(0, 26) + "..." : label;
+    }
+
+    function renderGrid() {
+      svg.innerHTML = "";
+      const ns = "http://www.w3.org/2000/svg";
+      [0.25, 0.5, 0.75, 1].forEach(s => {
+        const r = s * 415;
+        const rect = document.createElementNS(ns, "rect");
+        rect.setAttribute("x", 500 - r);
+        rect.setAttribute("y", 500 - r);
+        rect.setAttribute("width", r * 2);
+        rect.setAttribute("height", r * 2);
+        rect.setAttribute("class", "grid-ring");
+        svg.appendChild(rect);
+      });
+      [["M 500 65 L 500 935"], ["M 65 500 L 935 500"]].forEach(([d]) => {
+        const line = document.createElementNS(ns, "path");
+        line.setAttribute("d", d);
+        line.setAttribute("class", "axis");
+        svg.appendChild(line);
+      });
+      const center = document.createElementNS(ns, "circle");
+      center.setAttribute("cx", 500);
+      center.setAttribute("cy", 500);
+      center.setAttribute("r", 4);
+      center.setAttribute("fill", "#516070");
+      svg.appendChild(center);
+    }
+
+    function visibleItems() {
+      return DATA.items.filter(item => state.enabledTypes.has(item.type) && state.enabledItems.has(item.name));
+    }
+
+    function renderBlobs() {
+      renderGrid();
+      const ns = "http://www.w3.org/2000/svg";
+      const labels = [];
+      visibleItems().forEach((item, index) => {
+        const color = scoreColor(item);
+        const points = polygonPoints(item, DATA.items.indexOf(item));
+        const polygon = document.createElementNS(ns, "polygon");
+        polygon.setAttribute("points", points.map(p => p.join(",")).join(" "));
+        polygon.setAttribute("fill", color + "22");
+        polygon.setAttribute("stroke", color);
+        polygon.setAttribute("class", "blob" + (state.activeName === item.name ? " active" : ""));
+        polygon.setAttribute("tabindex", "0");
+        polygon.setAttribute("aria-label", item.name);
+        const polygonTitle = document.createElementNS(ns, "title");
+        polygonTitle.textContent = itemSummary(item.name);
+        polygon.appendChild(polygonTitle);
+        polygon.addEventListener("mouseenter", () => showDetail(item));
+        polygon.addEventListener("focus", () => showDetail(item));
+        polygon.addEventListener("click", () => showDetail(item));
+        svg.appendChild(polygon);
+
+        const drawOrder = drawingFranchises();
+        points.forEach((p, i) => {
+          const point = document.createElementNS(ns, "circle");
+          point.setAttribute("cx", p[0]);
+          point.setAttribute("cy", p[1]);
+          point.setAttribute("r", 3.8);
+          point.setAttribute("fill", drawOrder[i].color);
+          point.setAttribute("class", "blob-point");
+          svg.appendChild(point);
+        });
+
+        labels.push({ item, color, points });
+      });
+
+      labels.forEach(({ item, color, points }) => {
+        const index = DATA.items.indexOf(item);
+        const label = labelPosition(item, index, points);
+        const line = document.createElementNS(ns, "line");
+        line.setAttribute("x1", label.centroid[0]);
+        line.setAttribute("y1", label.centroid[1]);
+        line.setAttribute("x2", label.x + (label.anchor === "end" ? 8 : -8));
+        line.setAttribute("y2", label.y);
+        line.setAttribute("class", "label-line");
+        svg.appendChild(line);
+
+        const text = document.createElementNS(ns, "text");
+        text.setAttribute("x", label.x);
+        text.setAttribute("y", label.y);
+        text.setAttribute("text-anchor", label.anchor);
+        text.setAttribute("class", "blob-label" + (state.activeName === item.name ? " active" : ""));
+        text.style.setProperty("--label-color", color);
+        text.textContent = shortLabel(item.name);
+        const textTitle = document.createElementNS(ns, "title");
+        textTitle.textContent = itemSummary(item.name);
+        text.appendChild(textTitle);
+        text.addEventListener("mouseenter", () => showDetail(item));
+        text.addEventListener("focus", () => showDetail(item));
+        text.addEventListener("click", () => showDetail(item));
+        svg.appendChild(text);
+      });
+    }
+
+    function renderControls() {
+      const types = [...new Set(DATA.items.map(item => item.type))].sort();
+      types.forEach(type => state.enabledTypes.add(type));
+
+      typeFilters.innerHTML = "";
+      types.forEach(type => {
+        const label = document.createElement("label");
+        label.className = "check";
+        label.innerHTML = `<input type="checkbox" checked data-type="${escapeHtml(type)}"><span>${escapeHtml(type)}</span>`;
+        label.querySelector("input").addEventListener("change", event => {
+          if (event.target.checked) state.enabledTypes.add(type);
+          else state.enabledTypes.delete(type);
+          renderItemToggles();
+          renderBlobs();
+        });
+        typeFilters.appendChild(label);
+      });
+
+      renderItemToggles();
+    }
+
+    function renderItemToggles() {
+      itemToggles.innerHTML = "";
+      DATA.items
+        .filter(item => state.enabledTypes.has(item.type))
+        .forEach(item => {
+          const row = document.createElement("div");
+          row.className = "item-row";
+          row.title = itemSummary(item.name);
+          row.innerHTML = `
+            <label>
+              <input type="checkbox" ${state.enabledItems.has(item.name) ? "checked" : ""} data-item="${escapeHtml(item.name)}">
+              <span>${escapeHtml(item.name)}</span>
+            </label>
+            <a class="item-link" href="${escapeHtml(sourceHref(item))}" target="_blank" rel="noopener noreferrer" title="Open source page">wiki</a>
+          `;
+          row.querySelector("input").addEventListener("change", event => {
+            if (event.target.checked) state.enabledItems.add(item.name);
+            else state.enabledItems.delete(item.name);
+            renderBlobs();
+          });
+          row.addEventListener("mouseenter", () => showDetail(item));
+          row.addEventListener("focusin", () => showDetail(item));
+          itemToggles.appendChild(row);
+        });
+    }
+
+    function sourceHref(item) {
+      const ids = [...item.source.matchAll(/__(\d+)(?=\/|$)/g)].map(match => match[1]);
+      if (ids.length) {
+        return `https://confluence.cloud.bose.com/wiki/pages/viewpage.action?pageId=${ids[ids.length - 1]}`;
+      }
+      const absolute = `/Users/dc1054148/Library/Mobile Documents/com~apple~CloudDocs/MyNewRole/${item.source}`;
+      return `file://${absolute.split("/").map(encodeURIComponent).join("/")}`;
+    }
+
+    function showDetail(item) {
+      state.activeName = item.name;
+      const bars = DATA.franchises.map(f => {
+        const score = item.scores[f.key] || 0;
+        return `<div class="score-row">
+          <strong style="color:${f.color}">${shortName(f.key)}</strong>
+          <div class="bar"><div class="fill" style="width:${score * 100}%; background:${f.color}"></div></div>
+          <span>${score.toFixed(2)}</span>
+        </div>`;
+      }).join("");
+      const rationales = DATA.franchises.map(f => `<li><strong style="color:${f.color}">${escapeHtml(shortName(f.key))}:</strong> ${escapeHtml(item.rationale[f.key])}</li>`).join("");
+      detail.innerHTML = `
+        <h2>${escapeHtml(item.name)}</h2>
+        <span class="pill">${escapeHtml(item.type)}</span>
+        <p>${escapeHtml(itemSummary(item.name))}</p>
+        <div class="score-table">${bars}</div>
+        <h3>Qualification / Disqualification</h3>
+        <ul>${rationales}</ul>
+        <h3>Source</h3>
+        <div class="source"><a href="${escapeHtml(sourceHref(item))}" target="_blank" rel="noopener noreferrer">Open source</a><br>${escapeHtml(item.source)}<br>${escapeHtml(item.source_detail)}</div>
+      `;
+      renderBlobs();
+    }
+
+    function itemSummary(name) {
+      return {
+        "Perceptual Intelligence Systems": "Franchise for Bose models of how people hear, attend to, prefer, and evaluate sound.",
+        "Environmental Adaptation and Sensing Systems": "Franchise for sensing rooms, cabins, wearables, and acoustic scenes so audio systems adapt automatically.",
+        "Distributed Edge Orchestration Systems": "Franchise for coordinating audio experiences, compute, state, and handoff across nearby devices.",
+        "Trusted and Secure Perceptual Systems": "Franchise for privacy, identity, consent, secure inference, and trust architecture around intimate audio intelligence.",
+        "Quiet Spaces": "Prior Catalyst framing for reducing unwanted noise across wearables, appliances, cars, and spaces.",
+        "Beyond Immersive": "Prior Catalyst framing for turning immersive rendering, tuning, sensing, and orchestration into a platform business.",
+        "All Day Wearables": "Historical wearable framing for audio that can be worn longer and support more daily mixed-reality use cases.",
+        "Open Ear ANR Limits": "Quiet Spaces proof-point project about how much noise reduction is possible while keeping an open-ear experience.",
+        "Quiet Chair": "Quiet Spaces proof-point project for creating a localized quiet zone around a seated user.",
+        "Meta Materials": "Quiet Spaces proof-point project exploring acoustic materials as part of noise-control capability.",
+        "Automated Listening and Tuning": "Research Growth Initiative to automate out-loud audio tuning using perceptual targets and repeatable workflows.",
+        "Automatic Selective ANC": "Research Growth Initiative for ANC that suppresses unwanted sounds while passing important sounds through naturally.",
+        "Consumer-Meaningful ASM": "Research Growth Initiative for active sound management that makes in-cabin vehicle noise reduction obvious to consumers.",
+        "Fixed Zone Noise Cancelation": "Research Growth Initiative exploring free-space noise cancellation for a fixed listener position without wearables.",
+        "All Day Wearable Mixed Reality Audio Platform": "Research Growth Initiative for an all-day wearable platform spanning silence, transparency, and mixed physical/digital audio.",
+        "Superhuman Speech Interfaces": "Research Growth Initiative for private, robust speech interaction with humans and AI in difficult or silent conditions.",
+        "Redefining Out Loud Audio Tech": "Research Growth Initiative for adaptive out-loud rendering, directivity, room response, and realistic spatial audio.",
+        "Contextual Audio Intelligence Fabric": "Research Growth Initiative for shared context, device cooperation, and policy-driven audio orchestration.",
+        "Proprietary DSP Core Exploration": "Research Growth Initiative exploring whether Bose should define a partner-adoptable audio AI hardware architecture.",
+        "Haywire": "Research 1 Pager for real-time text-guided sound separation that lets selected sounds break through ANC.",
+        "Camilo": "Research 1 Pager for real-time content classification that drives adaptive DSP and automatic mode switching.",
+        "Semantic ANC and Acoustic Object Control": "Chris core research program for identifying sound objects and controlling what ANC suppresses or passes.",
+        "Target Speaker and Target Sound Hearing": "Chris core research program for selecting and enhancing a desired speaker or sound source.",
+        "Real-Time Conversational Audio Loop": "Chris core research program for low-latency conversational audio sensing, processing, and response.",
+        "Perception-per-Watt Runtime Partnership": "Chris core research program for maximizing perceptual benefit under tight power and runtime constraints."
+      }[name] || "Bose X portfolio item scored against the four franchise alignment dimensions.";
+    }
+
+    function shortName(key) {
+      return {
+        perceptual: "Perceptual",
+        environmental: "Environmental",
+        orchestration: "Orchestration",
+        trust: "Trust"
+      }[key];
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    document.getElementById("selectAll").addEventListener("click", () => {
+      DATA.items.forEach(item => state.enabledItems.add(item.name));
+      renderItemToggles();
+      renderBlobs();
+    });
+
+    document.getElementById("clearAll").addEventListener("click", () => {
+      state.enabledItems.clear();
+      renderItemToggles();
+      renderBlobs();
+    });
+
+    document.getElementById("focusCandidates").addEventListener("click", () => {
+      const names = new Set(["Haywire", "Camilo", "Quiet Spaces", "Contextual Audio Intelligence Fabric", "Automatic Selective ANC", "Superhuman Speech Interfaces"]);
+      state.enabledItems.clear();
+      DATA.items.forEach(item => {
+        if (names.has(item.name)) state.enabledItems.add(item.name);
+      });
+      renderItemToggles();
+      renderBlobs();
+    });
+
+    loadItems().then(() => {
+      renderControls();
+      renderBlobs();
+    });
+  </script>
+</body>
+</html>
